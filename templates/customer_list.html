@@ -7,13 +7,19 @@
   <h1>Customers</h1>
 
   <ul style="column-count: 4">
-    {% for customer in customers %}
-      <li>
-        <a href="/{{ customer.id }}/">
-          {{ customer.fullName() }}
-        </a>
-      </li>
-    {% endfor %}
+    {% if(customers.length === 0)%}
+      <div>No customers found</div>
+    {% endif %}
+    
+    {% if(customers.length > 0)%}
+      {% for customer in customers %}
+        <li>
+          <a href="/{{ customer.id }}/">
+            {{ customer.fullName() }}
+          </a>
+        </li>
+      {% endfor %}
+    {% endif %}
   </ul>
 
 {% endblock %}
