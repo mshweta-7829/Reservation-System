@@ -88,6 +88,11 @@ class Customer {
       );
     }
   }
+
+  /** return full name of customer: 'John Smith' */
+  fullName() {
+    return this.firstName + ' ' + this.lastName;
+  }
 }
 
 module.exports = Customer;

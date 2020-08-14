@@ -12,7 +12,8 @@ const router = new express.Router();
 router.get("/", async function (req, res, next) {
   try {
     const customers = await Customer.all();
-    return res.render("customer_list.html", { customers });
+    // TODO: ask if we are passing JSON or class instances
+    return res.render("customer_list.html", { customers })
   } catch (err) {
     return next(err);
   }
@@ -90,7 +91,9 @@ router.post("/:id/edit/", async function (req, res, next) {
 router.post("/:id/add-reservation/", async function (req, res, next) {
   try {
     const customerId = req.params.id;
+    console.log('req.body.startAt - before creating Date instance', req.body.startAt);
     const startAt = new Date(req.body.startAt);
+    console.log('req.body.startAt - AFTER Date instance', startAt);
     const numGuests = req.body.numGuests;
     const notes = req.body.notes;
 
@@ -101,6 +104,7 @@ router.post("/:id/add-reservation/", async function (req, res, next) {
       notes,
     });
     await reservation.save();
+    console.log('Formated Reservation Time', reservation.getformattedStartAt());
 
     return res.redirect(`/${customerId}/`);
   } catch (err) {
