@@ -93,6 +93,35 @@ class Customer {
   fullName() {
     return this.firstName + ' ' + this.lastName;
   }
+
+  /** Search for a customer */
+  static async search(name) {
+    let customers;
+    name = name.split(" ")
+
+    if (name.length === 1) {
+       customers = await db.query(
+        `SELECT id,
+          first_name AS "firstName",
+          last_name  AS "lastName",
+          phone,
+          notes
+        FROM customers
+        WHERE first_name ILIKE $1 or last_name ILIKE $1
+        ORDER BY last_name, first_name`,[`%${name[0]}%`])
+    } else {
+       customers = await db.query(
+        `SELECT id,
+        first_name AS "firstName",
+        last_name  AS "lastName",
+        phone,
+        notes
+      FROM customers
+      WHERE first_name ILIKE $1 or last_name ILIKE $2
+      ORDER BY last_name, first_name`,[`%${name[0]}%`, `%${name[1]}%`])
+    }
+    return customers.rows.map(c => new Customer(c));
+  }
 }
 
 module.exports = Customer;

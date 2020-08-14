@@ -11,8 +11,17 @@ const router = new express.Router();
 
 router.get("/", async function (req, res, next) {
   try {
-    const customers = await Customer.all();
-    // TODO: ask if we are passing JSON or class instances
+    let customers
+    let searchName = req.query.searchName
+    
+    if(!searchName){
+      customers = await Customer.all();
+    }
+    else{
+       customers = await Customer.search(searchName)
+    }
+
+      // TODO: ask if we are passing JSON or class instances
     return res.render("customer_list.html", { customers })
   } catch (err) {
     return next(err);
@@ -113,3 +122,4 @@ router.post("/:id/add-reservation/", async function (req, res, next) {
 });
 
 module.exports = router;
+
