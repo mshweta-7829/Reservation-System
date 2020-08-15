@@ -38,7 +38,7 @@ class Reservation {
     return results.rows.map(row => new Reservation(row));
   }
 
-  // TODO - ask why sept 1st becomes august 31 if I don't pass in a time (has to do with getformatedDate)
+  
   /** Create or Update a reservation */
   async save() {
     if (this.id === undefined) {

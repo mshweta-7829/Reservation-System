@@ -28,6 +28,17 @@ router.get("/", async function (req, res, next) {
   }
 });
 
+
+router.get('/best-customers', async function(req, res, next) {
+  try {
+    const customers = await Customer.bestCustomers();
+    // TODO think about how to better organize templates - inherit from list template or include variables
+    return res.render('customers_best.html', { customers });
+  } catch(err) {
+    return next(err);
+  }
+})
+
 /** Form to add a new customer. */
 
 router.get("/add/", async function (req, res, next) {

@@ -29,6 +29,35 @@ class Customer {
     return results.rows.map(c => new Customer(c));
   }
 
+  /** find 10 customers with most reservations 
+   * return: [<customer>, <customer>,...]
+  */
+  static async bestCustomers() {
+    const customers = await db.query (
+      `SELECT c.id,
+              c.first_name AS "firstName",
+              c.last_name  AS "lastName",
+              c.phone,
+              c.notes
+      FROM customers AS c
+      JOIN reservations AS r
+      ON c.id = r.customer_id
+      GROUP BY c.id
+      ORDER BY COUNT(*) DESC
+      LIMIT 10`
+    );
+      return customers.rows.map( c => new Customer(c));
+  }
+
+    // SELECT r.start_at, c.id,
+    //   c.first_name AS "firstName",
+    //   c.last_name  AS "lastName"
+    //   FROM customers AS c
+    //   JOIN reservations AS r
+    //   ON c.id = r.customer_id
+    //   WHERE c.id = 39;
+  
+
   /** get a customer by ID. */
 
   static async get(id) {
